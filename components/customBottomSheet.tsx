@@ -1,6 +1,6 @@
 import { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { forwardRef, ReactNode, useImperativeHandle, useMemo, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export interface CustomBottomSheetProps {
     children: ReactNode;
@@ -18,7 +18,7 @@ export interface CustomBottomSheetRef {
 
 const CustomBottomSheet = forwardRef<CustomBottomSheetRef, CustomBottomSheetProps>(({
     children,
-    snapPoints = ['25%', '50%', '75%'],
+    snapPoints = ['90%', '100%'],
     enablePanDownToClose = true,
     backdropComponent = true,
     onClose,
@@ -39,7 +39,7 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, CustomBottomSheetProp
             {...props}
             disappearsOnIndex={-1}
             appearsOnIndex={0}
-            opacity={0.7}
+            opacity={0.3}
         />
     )
 
@@ -52,10 +52,11 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, CustomBottomSheetProp
             onDismiss={onClose}
             backgroundStyle={styles.bottomSheetBackground}
             handleIndicatorStyle={styles.handleIndicator}
+            keyboardBehavior="interactive"
+            keyboardBlurBehavior="restore"
+            android_keyboardInputMode="adjustResize"
         >
-            <View style={styles.contentContainer}>
-                {children}
-            </View>
+            {children}                            
         </BottomSheetModal>
     )
 })
@@ -63,17 +64,21 @@ const CustomBottomSheet = forwardRef<CustomBottomSheetRef, CustomBottomSheetProp
 const styles = StyleSheet.create({
     bottomSheetBackground: {
         backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 48,
+        borderTopRightRadius: 48,
     },
     handleIndicator: {
         backgroundColor: '#D1D5DB',
-        width: 40,
-        height: 4,
+        borderRadius: 100,
+        width: 48,
+        height: 5,
     },
     contentContainer: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingHorizontal: 16,
+        paddingTop: 8,
     },
 })
 
