@@ -1,8 +1,10 @@
+import toastConfig from "@/configs/toastConfig";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from 'react-native-toast-message';
 import "../global.css";
 
 SplashScreen.preventAutoHideAsync();
@@ -40,14 +42,20 @@ const RootLayout = () => {
     }
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <BottomSheetModalProvider>
-                <Stack>
-                    <Stack.Screen name="index" options={{headerShown: false}} />
-                    <Stack.Screen name="form" options={{headerShown: false}} />
-                </Stack>
-            </BottomSheetModalProvider>
-        </GestureHandlerRootView>
+        <>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+                <BottomSheetModalProvider>
+                    <Stack>
+                        <Stack.Screen name="index" options={{headerShown: false}} />
+                        <Stack.Screen name="form" options={{headerShown: false}} />
+                    </Stack>
+                </BottomSheetModalProvider>                
+            </GestureHandlerRootView>
+            <Toast 
+                config={toastConfig}
+                visibilityTime={3000}
+            />
+        </>
     );
 }
 
