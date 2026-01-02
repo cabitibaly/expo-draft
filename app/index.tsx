@@ -12,18 +12,18 @@ const Index = () => {
     const bottomSheetRef = useRef<CustomBottomSheetRef>(null);
     const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);
 
-    useEffect(() => {
+    useEffect(() => {        
 
         (
             async () => {
                 const asked = await hasPermissionBeenAsked();
-                const granted = await checkNotificationPermisison();
+                const granted = await checkNotificationPermisison();                
 
                 if (!asked && !granted) {
                     setTimeout(() => notifBottomSheetRef.current?.open(), 500);
                 }
             }
-        )
+        )()
 
     }, [])
     

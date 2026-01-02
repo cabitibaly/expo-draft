@@ -16,6 +16,8 @@ const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
         const granted = await requestNotificationPermission()
         await makePermissionAsked();
 
+        onClose();
+
         if (granted) {
             Toast.show({
                 type: 'success',
@@ -29,7 +31,7 @@ const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
                 text1: 'Autorisation',
                 text2: `Vous n'avez pas autorisé Attendify à vous envoyer des notifications importantes.`,
             });
-        }
+        }        
     }
 
     return (
