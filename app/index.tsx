@@ -1,12 +1,31 @@
 import CustomBottomSheet, { CustomBottomSheetRef } from "@/components/customBottomSheet";
+import NotificationPermission from "@/components/notification-permission";
+import { checkNotificationPermisison } from "@/utils/notification";
+import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import Toast from "react-native-toast-message";
 
 const Index = () => {
     const bottomSheetRef = useRef<CustomBottomSheetRef>(null);
+    const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);
+
+    useEffect(() => {
+
+        (
+            async () => {
+                const asked = await hasPermissionBeenAsked();
+                const granted = await checkNotificationPermisison();
+
+                if (!asked && !granted) {
+                    setTimeout(() => notifBottomSheetRef.current?.open(), 500);
+                }
+            }
+        )
+
+    }, [])
     
     return (
         <ImageBackground
@@ -33,6 +52,9 @@ const Index = () => {
             >
                 <Text className="text-gris-12 text-xl font-medium">Toast</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+                <Text className="text-gris-12 text-xl font-medium">Allow notification</Text>
+            </TouchableOpacity>
             <CustomBottomSheet 
                 ref={bottomSheetRef}
                 onClose={() => console.log('Fermé')}
@@ -42,6 +64,15 @@ const Index = () => {
                             <Text className="text-gris-1 text-2xl font-medium">Modifier son compte</Text>
                         </View>
                 </BottomSheetView>                    
+            </CustomBottomSheet>
+            <CustomBottomSheet 
+                ref={notifBottomSheetRef}
+                onClose={() => console.log('Fermé')}
+                snapPoints={["47%"]}
+            >   
+                <NotificationPermission 
+                    onClose={ () => {notifBottomSheetRef.current?.close()}}
+                />
             </CustomBottomSheet>
         </ImageBackground>
     )
