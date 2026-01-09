@@ -5,7 +5,7 @@ import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
 import React, { useEffect, useRef } from 'react';
-import { ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 const Index = () => {
@@ -42,7 +42,7 @@ const Index = () => {
             <TouchableOpacity 
                 onPress={() => {
                     Toast.show({
-                        type: 'info',
+                        type: 'success',
                         text1: 'Pointage arrivée',
                         text2: `Vous avez pointé aujourd'hui à ${new Date().toLocaleTimeString()}`,                         
                     });
@@ -73,7 +73,7 @@ const Index = () => {
                 <NotificationPermission 
                     onClose={ () => {notifBottomSheetRef.current?.close()}}
                 />
-            </CustomBottomSheet>
+            </CustomBottomSheet>    
         </ImageBackground>
     )
 }
