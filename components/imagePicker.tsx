@@ -1,3 +1,4 @@
+import { uploadHandler } from '@/utils/uploaderHandler';
 import * as DocumentPicker from 'expo-document-picker';
 import { Camera } from 'lucide-react-native';
 import React, { useState } from 'react';
@@ -15,6 +16,7 @@ const ImagePicker = () => {
 
         if (!result.canceled) {
             setFile(result.assets[0]);
+            uploadHandler(result.assets[0]);
         }
     }
 

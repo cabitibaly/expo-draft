@@ -19,7 +19,7 @@ const FileUpdoald = ({file, setFile}: FileUpdoaldProps) => {
         })
 
         if (!result.canceled) {
-            setFile(result.assets[0]);
+            setFile(result.assets[0]);            
         }
     }
 
