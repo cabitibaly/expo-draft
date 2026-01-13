@@ -1,5 +1,6 @@
 import CustomBottomSheet, { CustomBottomSheetRef } from "@/components/customBottomSheet";
 import NotificationPermission from "@/components/notification-permission";
+import { downloadfile } from "@/utils/downloadFile";
 import { checkNotificationPermisison } from "@/utils/notification";
 import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -54,6 +55,9 @@ const Index = () => {
             </TouchableOpacity>
             <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Allow notification</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={downloadfile}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+                <Text className="text-gris-12 text-xl font-medium">Download</Text>
             </TouchableOpacity>
             <CustomBottomSheet 
                 ref={bottomSheetRef}

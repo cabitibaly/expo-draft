@@ -25,17 +25,7 @@ const Form = () => {
             source={require("../assets/images/main-background.jpg")}
             resizeMode="cover"
             className="px-4 py-4 pt-28 flex-1 items-center justify-center gap-6"
-        >       
-            {/* <View className='overflow-hidden size-32 rounded-full bg-turquoise-8 items-center justify-center'>                    
-                {
-                    image ?
-                        <Image className='size-full' source={{ uri: image }} /> 
-                        : 
-                        <Text className='text-gris-12 text-5xl font-bold'>
-                            C
-                        </Text>
-                }
-            </View>      */}
+        >
             <ImagePicker />
             <CustomDateTimePicker onDateChange={setTime} defaultTime={defaultTimeFormat(8, 0)} />
             <DatePicker setSelectedDate={setSelectedDate2} selectedDate={selectedDate2} />                       
