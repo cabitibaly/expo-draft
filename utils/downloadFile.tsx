@@ -1,42 +1,25 @@
 import { Directory, File, Paths } from 'expo-file-system';
-import * as FileSystem from 'expo-file-system/legacy';
+import * as Sharing from 'expo-sharing';
+
+const ACCESS_TOKEN = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGlsaXNhdGV1cklEIjoxLCJlbWFpbCI6ImNvcnZ1c0BqaXl1dS5jb20iLCJ0ZWxlcGhvbmUiOiI2NDE0MTUyNSIsInJvbGVJRCI6MSwianRpIjoiY2IzOGVjZjktNjZlZC00OTQ2LTgyM2QtMzhkMWVkNTEyMDYyIiwiZXhwIjoxNzY4NDczMDk4LCJpYXQiOjE3NjgzODY2OTh9.eYlDgysSr4L9TtB7UAIJfnFMfz6bK9fLW7bZGd9IOYU";
 
 export const downloadfile = async () => {
-    const url = 'https://pdfobject.com/pdf/sample.pdf';
+    const url = 'http://192.168.11.101:8080/pointage/export?debut=2026-01-01T00:00:00.000Z&fin=2026-01-31T00:00:00.000Z';
 
-    try {
-        // 1. Télécharger d'abord dans le cache
+    try {        
         const cacheDir = new Directory(Paths.cache, 'temp');
+        cacheDir.delete();
         cacheDir.create();
-        const tempFile = await File.downloadFileAsync(url, cacheDir);
-        
-        // 2. Demander à l'utilisateur où sauvegarder (SAF)
-        const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-        
-        if (permissions.granted) {
-            const uri = permissions.directoryUri;
-            
-            // 3. Créer le fichier dans le dossier choisi
-            const fileUri = await FileSystem.StorageAccessFramework.createFileAsync(
-                uri,
-                'sample.pdf',
-                'application/pdf'
-            );
-            
-            // 4. Copier le contenu
-            const content = await FileSystem.readAsStringAsync(tempFile.uri, {
-                encoding: FileSystem.EncodingType.Base64
-            });
-            
-            await FileSystem.writeAsStringAsync(fileUri, content, {
-                encoding: FileSystem.EncodingType.Base64
-            });
-            
-            console.log('Fichier sauvegardé :', fileUri);            
-            // 5. Nettoyer le cache
-            await tempFile.delete();
-        }
-    } catch (error) {
-        console.error(error);
+
+        const tempFile = await File.downloadFileAsync(url, cacheDir, {
+            headers: {
+                "Authorization": `Bearer ${ACCESS_TOKEN}`
+            }
+        });
+        await Sharing.shareAsync(tempFile.uri);
+
+        tempFile.delete();
+    } catch (error: any) {        
+        console.error("une erreur est survenue: ", error.message?.includes('status: 401'));
     }
 }

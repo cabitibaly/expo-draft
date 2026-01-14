@@ -5,11 +5,12 @@ import { checkNotificationPermisison } from "@/utils/notification";
 import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useEffect, useRef } from 'react';
-import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 const Index = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const bottomSheetRef = useRef<CustomBottomSheetRef>(null);
     const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);
 
@@ -27,6 +28,18 @@ const Index = () => {
         )()
 
     }, [])
+
+    const handleClick = async () => {
+        setIsLoading(true);        
+
+        try {
+            await downloadfile();
+        } catch (error) {
+            console.error("erreur: ", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }    
     
     return (
         <ImageBackground
@@ -56,8 +69,13 @@ const Index = () => {
             <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Allow notification</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={downloadfile}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
-                <Text className="text-gris-12 text-xl font-medium">Download</Text>
+            <TouchableOpacity onPress={handleClick} disabled={isLoading} activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">                
+                {
+                    isLoading ?
+                        <ActivityIndicator size="small" color="#EEEEF0" />
+                        :
+                        <Text className="text-gris-12 text-xl font-medium">Download</Text>
+                }
             </TouchableOpacity>
             <CustomBottomSheet 
                 ref={bottomSheetRef}
