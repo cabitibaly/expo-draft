@@ -1,4 +1,5 @@
 import CustomBottomSheet, { CustomBottomSheetRef } from "@/components/customBottomSheet";
+import LocationPermission from "@/components/location-permission";
 import NotificationPermission from "@/components/notification-permission";
 import { downloadfile } from "@/utils/downloadFile";
 import { checkNotificationPermisison } from "@/utils/notification";
@@ -12,7 +13,8 @@ import Toast from "react-native-toast-message";
 const Index = () => {
     const [isLoading, setIsLoading] = useState(false);
     const bottomSheetRef = useRef<CustomBottomSheetRef>(null);
-    const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);
+    const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);        
+    const locationBottomSheetRef = useRef<CustomBottomSheetRef>(null);        
 
     useEffect(() => {        
 
@@ -69,6 +71,9 @@ const Index = () => {
             <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Allow notification</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => locationBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+                <Text className="text-gris-12 text-xl font-medium">Allow location</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={handleClick} disabled={isLoading} activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">                
                 {
                     isLoading ?
@@ -94,6 +99,15 @@ const Index = () => {
             >   
                 <NotificationPermission 
                     onClose={ () => {notifBottomSheetRef.current?.close()}}
+                />
+            </CustomBottomSheet>    
+            <CustomBottomSheet 
+                ref={locationBottomSheetRef}
+                onClose={() => console.log('Fermé')}
+                snapPoints={["47%"]}
+            >   
+                <LocationPermission 
+                    onClose={ () => {locationBottomSheetRef.current?.close()}}
                 />
             </CustomBottomSheet>    
         </ImageBackground>
