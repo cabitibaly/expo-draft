@@ -1,7 +1,7 @@
 import CustomBottomSheet, { CustomBottomSheetRef } from "@/components/customBottomSheet";
 import LocationPermission from "@/components/location-permission";
 import NotificationPermission from "@/components/notification-permission";
-import { downloadfile } from "@/utils/downloadFile";
+import { downloadAndOpenFile } from "@/utils/downloadFile";
 import { checkNotificationPermisison } from "@/utils/notification";
 import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -35,7 +35,7 @@ const Index = () => {
         setIsLoading(true);        
 
         try {
-            await downloadfile();
+            await downloadAndOpenFile("https://res.cloudinary.com/dadbkjo4m/raw/upload/v1768576684/pdfs/saplqbidbuqtwpecy0oh.pdf");
         } catch (error) {
             console.error("erreur: ", error);
         } finally {
