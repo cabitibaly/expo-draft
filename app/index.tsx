@@ -1,12 +1,11 @@
+import CameraPermission from "@/components/camera-permission";
 import CustomBottomSheet, { CustomBottomSheetRef } from "@/components/customBottomSheet";
-import LocationPermission from "@/components/location-permission";
-import NotificationPermission from "@/components/notification-permission";
+import { checkCameraPermission } from "@/utils/camera";
 import { downloadAndOpenFile } from "@/utils/downloadFile";
-import { checkNotificationPermisison } from "@/utils/notification";
 import { hasPermissionBeenAsked } from "@/utils/storage";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 
@@ -14,14 +13,30 @@ const Index = () => {
     const [isLoading, setIsLoading] = useState(false);
     const bottomSheetRef = useRef<CustomBottomSheetRef>(null);
     const notifBottomSheetRef = useRef<CustomBottomSheetRef>(null);        
-    const locationBottomSheetRef = useRef<CustomBottomSheetRef>(null);        
+    const locationBottomSheetRef = useRef<CustomBottomSheetRef>(null);
+    const cameraBottomSheetRef = useRef<CustomBottomSheetRef>(null);        
+
+    // useEffect(() => {        
+
+    //     (
+    //         async () => {
+    //             const asked = await hasPermissionBeenAsked();
+    //             const granted = await checkNotificationPermisison();                
+
+    //             if (!asked && !granted) {
+    //                 setTimeout(() => notifBottomSheetRef.current?.open(), 500);
+    //             }
+    //         }
+    //     )()
+
+    // }, [])
 
     useEffect(() => {        
 
         (
             async () => {
-                const asked = await hasPermissionBeenAsked();
-                const granted = await checkNotificationPermisison();                
+                const asked = await hasPermissionBeenAsked("CAMERA_PERMISSION_kEY");
+                const granted = await checkCameraPermission();                
 
                 if (!asked && !granted) {
                     setTimeout(() => notifBottomSheetRef.current?.open(), 500);
@@ -49,6 +64,9 @@ const Index = () => {
             resizeMode="cover"
             className="px-4 py-4 flex-1 items-center justify-center gap-6 bg-turquoise-2"
         >
+            <TouchableOpacity onPress={() => router.push("/camera")}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+                <Text className="text-gris-12 text-xl font-medium">Camera</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => {bottomSheetRef.current?.open()}}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Bottom sheet</Text>
             </TouchableOpacity>
@@ -68,11 +86,14 @@ const Index = () => {
             >
                 <Text className="text-gris-12 text-xl font-medium">Toast</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+            {/* <TouchableOpacity onPress={() => notifBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Allow notification</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => locationBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
                 <Text className="text-gris-12 text-xl font-medium">Allow location</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={() => cameraBottomSheetRef.current?.open()}  activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">
+                <Text className="text-gris-12 text-xl font-medium">Allow camera</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleClick} disabled={isLoading} activeOpacity={0.8} className="p-3 w-full rounded-full bg-turquoise-8 items-center justify-center">                
                 {
@@ -92,7 +113,7 @@ const Index = () => {
                         </View>
                 </BottomSheetView>                    
             </CustomBottomSheet>
-            <CustomBottomSheet 
+            {/* <CustomBottomSheet 
                 ref={notifBottomSheetRef}
                 onClose={() => console.log('Fermé')}
                 snapPoints={["47%"]}
@@ -109,7 +130,16 @@ const Index = () => {
                 <LocationPermission 
                     onClose={ () => {locationBottomSheetRef.current?.close()}}
                 />
-            </CustomBottomSheet>    
+            </CustomBottomSheet>     */}
+            <CustomBottomSheet 
+                ref={cameraBottomSheetRef}
+                onClose={() => console.log('Fermé')}
+                snapPoints={["47%"]}
+            >   
+                <CameraPermission 
+                    onClose={ () => {cameraBottomSheetRef.current?.close()}}
+                />
+            </CustomBottomSheet>
         </ImageBackground>
     )
 }

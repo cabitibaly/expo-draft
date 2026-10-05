@@ -1,19 +1,19 @@
-import { requestNotificationPermission } from '@/utils/notification';
+import { requestCameraPermission } from '@/utils/camera';
 import { makePermissionAsked } from '@/utils/storage';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
+import { Camera } from 'lucide-react-native';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import BellIcon from './bellIcon';
 
-interface NotificationPermissionProps {
+interface CameraPermissionProps {
     onClose: () => void;
 }
 
-const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
+const CameraPermission = ({ onClose }: CameraPermissionProps) => {
     
     const handleAllow = async () => {
-        const granted = await requestNotificationPermission()
-        await makePermissionAsked('NOTIFICATION_PERMISSION_kEY');
+        const granted = await requestCameraPermission();
+        await makePermissionAsked('CAMERA_PERMISSION_kEY');
 
         onClose();
 
@@ -21,14 +21,14 @@ const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
             Toast.show({
                 type: 'success',
                 text1: 'Autorisation',
-                text2: `Vous avez autorisé Attendify à vous envoyer des notifications importantes.`,
+                text2: `Vous avez autorisé Attendify à utiliser votre camera.`,
             });
             
         } else {
             Toast.show({
                 type: 'error',
                 text1: 'Autorisation',
-                text2: `Vous n'avez pas autorisé Attendify à vous envoyer des notifications importantes.`,
+                text2: `Vous n'avez pas autorisé Attendify à utiliser votre camera.`,
             });
         }        
     }
@@ -40,12 +40,12 @@ const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
         >
             <View className='w-full flex-col items-center justify-between gap-6'>
                 <View className='size-20 bg-turquoise-8 rounded-full items-center justify-center'>
-                    <BellIcon size={28} color="#EEEEF0" />
+                    <Camera size={28} color="#EEEEF0" />
                 </View>
                 <View className='w-full flex-col items-center justify-center gap-4'>
-                    <Text className='text-gris-1 text-3xl text-center font-bold'>Activer les notifications</Text>
+                    <Text className='text-gris-1 text-3xl text-center font-bold'>Activer l'accès à la caméra</Text>
                     <Text className='text-gris-1 text-xl text-center font-normal'>
-                        Autorisez Attendify à vous envoyer des notifications importantes.
+                        Autorisez Attendify à utiliser votre caméra.
                     </Text>
                 </View>
                 <View className='w-full flex-col items-center justify-center gap-1'>
@@ -61,4 +61,4 @@ const NotificationPermission = ({ onClose }: NotificationPermissionProps) => {
     )
 }
 
-export default NotificationPermission
+export default CameraPermission

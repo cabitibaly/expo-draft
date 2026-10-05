@@ -1,4 +1,4 @@
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerChangeEvent } from '@react-native-community/datetimepicker';
 import { Clock4 } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { Platform, Text, TouchableOpacity, View } from 'react-native';
@@ -13,7 +13,7 @@ const CustomDateTimePicker = ({ onDateChange, defaultTime }: DatePickerProps) =>
     const [visible, setVisible] = useState<boolean>(false);    
     const [time, setTime] = useState<Date>(defaultTime);
 
-    const onChange = (event: DateTimePickerEvent, selectedTime?: Date): void => {
+    const onChange = (event: DateTimePickerChangeEvent, selectedTime?: Date): void => {
         const currentTime = selectedTime || time;
         setVisible(Platform.OS === 'ios');
         setTime(currentTime);
@@ -48,7 +48,7 @@ const CustomDateTimePicker = ({ onDateChange, defaultTime }: DatePickerProps) =>
                         mode="time"
                         is24Hour={true}
                         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onChange={onChange}
+                        onValueChange={onChange}
                     />
                 )
             }

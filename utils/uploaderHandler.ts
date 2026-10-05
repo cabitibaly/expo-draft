@@ -29,20 +29,29 @@ export const uploadHandler = async (file: DocumentPicker.DocumentPickerAsset | n
             text2: "Veuillez sélectionner une image",
         })
         return "";
-    }
-
-    if (typeof file === "string") return ""
+    }    
 
     const formData = new FormData();
 
-    formData.append(
-        "file", 
-        {
-            uri: file.uri,
-            type: file.mimeType || getImageType(file.name || ""),
-            name: file.name || "image.jpg",
-        } as unknown as Blob
-    );
+    if (typeof file === "string") {
+        formData.append(
+            "file", 
+            {
+                uri: file,
+                type: "image/jpeg",
+                name: "image.jpg",
+            } as unknown as Blob
+        );   
+    } else {
+        formData.append(
+            "file", 
+            {
+                uri: file.uri,
+                type: file.mimeType || getImageType(file.name || ""),
+                name: file.name || "image.jpg",
+            } as unknown as Blob
+        );
+    }
 
     formData.append("folder", "images/");
 
